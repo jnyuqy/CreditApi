@@ -65,10 +65,11 @@ public class StrategyController extends BaseController{
 	 */
 	@ApiOperation(value = "查询动态列表", notes = "可根据主键，查询条数查询出对应的数据")
 	@ApiImplicitParams(value = {
-			@ApiImplicitParam(name = "strategy", value = "查询实体,size : 查询条数,id : 动态主键,hot : 1 => 最新动态", dataType = "BankBean"),
+			@ApiImplicitParam(name = "size", value = "查询总条数", dataType = "Integer", required = true),
 			@ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String", required = true),
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
-			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String", required = true) })
+			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String", required = true)
+	})
 	@RequestMapping(value = "/{time}/{api_key}/{sign}", method = { RequestMethod.POST })
 	public JSONObject list(@PathVariable String time,@PathVariable String api_key,@PathVariable String sign,@RequestBody StrategyBean strategy){
 		returnJson.clear();
