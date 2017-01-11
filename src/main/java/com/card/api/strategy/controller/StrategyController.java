@@ -58,20 +58,18 @@ public class StrategyController extends BaseController{
 	 *            apikey<br>
 	 * @param sign
 	 *            签名<br>
-	 * @param strategy
-	 *            查询实体<br>
 	 * @return
 	 * @return JSONObject
 	 */
 	@ApiOperation(value = "查询动态列表", notes = "可根据主键，查询条数查询出对应的数据")
 	@ApiImplicitParams(value = {
-			@ApiImplicitParam(name = "size", value = "查询总条数", dataType = "Integer", required = true),
+			@ApiImplicitParam(name = "size", value = "查询总条数,根据传入的数字进行查询", dataType = "Integer", required = true),
 			@ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String", required = true),
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String", required = true)
 	})
 	@RequestMapping(value = "/{time}/{api_key}/{sign}", method = { RequestMethod.POST })
-	public JSONObject list(@PathVariable String time,@PathVariable String api_key,@PathVariable String sign,@RequestBody StrategyBean strategy){
+	public JSONObject list(@PathVariable String time,@PathVariable String api_key,@PathVariable String sign){
 		returnJson.clear();
 		// 标识，默认为true
 		boolean flag = true;
@@ -90,7 +88,7 @@ public class StrategyController extends BaseController{
 				}
 			})) {
 				// 执行发送短信
-				List<StrategyBean> strategys = strategyService.list(strategy); 
+				List<StrategyBean> strategys = strategyService.list();
 				//设置返回验证码
 				returnJson.put(RETURN_RESULT, strategys);
 			}
