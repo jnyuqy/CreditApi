@@ -21,6 +21,12 @@ import org.springframework.data.querydsl.QueryDslPredicateExecutor;
  * 修改时间：2016年12月16日 上午10:03:57 <br>
  * 修改备注：<br>
  */
-public interface BaseDAO<T> extends JpaRepository<T, Long>, JpaSpecificationExecutor<T>,QueryDslPredicateExecutor<T>, Serializable {
+public interface BaseDAO<T>
+        extends
+            JpaRepository<T, Long>,
+            JpaSpecificationExecutor<T>,
+            QueryDslPredicateExecutor<T>,
+            Serializable
+{
 
 }

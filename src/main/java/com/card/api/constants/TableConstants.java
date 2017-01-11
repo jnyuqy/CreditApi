@@ -31,12 +31,6 @@ public interface TableConstants {
 	/** 银行服务信息表 */
 	public static final String SYSTEM_BANK_SERVICE_INFO = "c_common_bank_service_info";
 	
-	/** 信用卡等级基本信息表 */
-	public static final String SYSTEM_LEVEL_INFO = "c_credit_level_info";
-	
-	/** 信用卡系列基本信息表 */
-	public static final String SYSTEM_SERIES_INFO = "c_credit_series_info";
-	
 	/** 链接基本信息表 */
 	public static final String SYSTEM_LINKS_INFO = "c_common_links_info";
 
@@ -96,4 +90,28 @@ public interface TableConstants {
 
 	/** 信用卡攻略教程表标签 */
 	public static final String COMMON_CREDIT_STRATRGY_TAG = "c_credit_strategy_tag";
+
+	/** 信用卡等级基本信息表 */
+	public static final String SYSTEM_LEVEL_INFO = "c_credit_level_info";
+
+	/** 信用卡基本信息表 */
+	public static final String SYSTEM_CREDIT_INFO = "c_credit_info";
+
+	/** 信用卡系列基本信息表 */
+	public static final String SYSTEM_SERIES_INFO = "c_credit_series_info";
+
+	/** 信用卡主题管理基本信息表 */
+	public static final String SYSTEM_THEME_INFO = "c_credit_theme";
+
+	/** 信用卡分期基本信息表 */
+	public static final String SYSTEM_SPLIT_INFO = "c_credit_split_info";
+
+	/** 信用卡分期期数基本信息表 */
+	public static final String SYSTEM_SPLITNUM_INFO = "c_dictionary_split_info";
+
+	/** 信用卡组织管理基本信息表 */
+	public static final String SYSTEM_ORGAN_INFO = "c_credit_organ_info";
+
+	/** 信用卡特权管理基本信息表 */
+	public static final String SYSTEM_PRIVILEGE_INFO = "c_credit_privilege_info";
 }
