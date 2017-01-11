@@ -3,12 +3,10 @@ package com.card.api.remind.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import com.card.api.bank.bean.BankBean;
+import com.card.core.utils.ValidatorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSONObject;
 import com.card.api.remind.bean.RemindBean;
@@ -59,21 +57,37 @@ public class RemindController extends BaseController{
 	 *            api_key<br>
 	 * @param sign
 	 *            签名<br>
-	 * @param remind
 	 *            还款提醒实体<br>
 	 * @return<br>
 	 * @return JSONObject
 	 */
 	@ApiOperation(value = "添加还款提醒", notes = "根据还款提醒实体保存数据")
 	@ApiImplicitParams(value = {
+			@ApiImplicitParam(name = "bankId", value = "手机号码", dataType = "Long",required = true),
+			@ApiImplicitParam(name = "openPhoneMsg", value = "开通手机短信提醒,0：不开启,1：开启", dataType = "Integer"),
+			@ApiImplicitParam(name = "openPhoneMsgDays", value = "手机短信提醒提前天数", dataType = "Integer"),
+			@ApiImplicitParam(name = "openSystemMsg", value = "开通系统消息提醒,0：不开启,1：开启", dataType = "Integer"),
+			@ApiImplicitParam(name = "openSystemMsgDays", value = "系统消息提示提前天数", dataType = "Integer"),
 			@ApiImplicitParam(name = "phone", value = "手机号码", dataType = "String",required = true),
 			@ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String",required = true),
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String",required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String",required = true)
 	})
 	@RequestMapping(value = "/save/{phone}/{time}/{api_key}/{sign}", method = RequestMethod.POST)
-	public JSONObject save(@PathVariable String phone, @PathVariable String time, @PathVariable String api_key,
-			@PathVariable String sign,@RequestBody RemindBean remind) {
+	public JSONObject save
+		(
+				@PathVariable String phone,
+				@PathVariable String time,
+				@PathVariable String api_key,
+				@PathVariable String sign,
+				@RequestParam (value = "bankId",required = true) Long bankId,
+				@RequestParam(value = "openPhoneMsg",defaultValue = "") Integer openPhoneMsg,
+				@RequestParam(value = "openPhoneMsgDays",defaultValue = "") Integer openPhoneMsgDays,
+				@RequestParam(value = "openSystemMsg",defaultValue = "") Integer openSystemMsg,
+				@RequestParam(value = "openSystemMsgDays",defaultValue = "") Integer openSystemMsgDays
+
+		)
+	{
 		//标识，默认为true
 		boolean flag = true;
 		//清空集合
@@ -86,6 +100,11 @@ public class RemindController extends BaseController{
 				 */
 				private static final long serialVersionUID = 2138548644834576384L;
 				{
+					put("bankId", bankId);
+					put("openPhoneMsg", openPhoneMsg);
+					put("openPhoneMsgDays", openPhoneMsgDays);
+					put("openSystemMsg", openSystemMsg);
+					put("openSystemMsgDays", openSystemMsgDays);
 					put("phone", phone);
 					put(SecurityUtils._TIME, time);
 					put(SecurityUtils._API_KEY, api_key);
@@ -94,6 +113,14 @@ public class RemindController extends BaseController{
 				}
 			})) 
 			{
+				//收集参数
+				RemindBean remind = new RemindBean();
+				remind.setBank(new BankBean(bankId));
+				remind.setPhoneMess(ValidatorUtils.isEmpty(openPhoneMsg) ? 0 :openPhoneMsg);
+				remind.setPhoneMessDay(ValidatorUtils.isEmpty(openPhoneMsgDays) ? 0 :openPhoneMsgDays);
+				remind.setSystemMess(ValidatorUtils.isEmpty(openSystemMsg) ? 0 :openSystemMsg);
+				remind.setSystemMessDay(ValidatorUtils.isEmpty(openSystemMsgDays) ? 0 :openSystemMsgDays);
+
 				//保存还款提醒
 				remindService.save(phone, remind);
 			}
@@ -139,8 +166,14 @@ public class RemindController extends BaseController{
 			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String",required = true)
 	})
 	@RequestMapping(value = "/{phone}/{time}/{api_key}/{sign}", method = RequestMethod.GET)
-	public JSONObject list(@PathVariable String phone,@PathVariable String time, @PathVariable String api_key,
-			@PathVariable String sign) {
+	public JSONObject list
+		(
+				@PathVariable String phone,
+				@PathVariable String time,
+				@PathVariable String api_key,
+				@PathVariable String sign
+		)
+	{
 		//标识，默认为true
 		boolean flag = true;
 		//清空集合

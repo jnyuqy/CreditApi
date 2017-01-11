@@ -44,14 +44,20 @@ public class SystemMsgController extends BaseController
      */
     @ApiOperation(value = "查询消息列表", notes = "根据手机号码查询系统消息、用户消息列表")
     @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "id", value = "id=>根据主键查询详情", dataType = "Long"),
             @ApiImplicitParam(name = "phone", value = "手机号码", dataType = "String"),
-            @ApiImplicitParam(name = "systemMsg", value = "查询实体,id=>根据主键查询详情", dataType = "SystemMsgBean"),
             @ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String", required = true),
             @ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
             @ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String", required = true) })
     @RequestMapping(value = "/{phone}/{time}/{api_key}/{sign}", method = { RequestMethod.POST })
-    public JSONObject list(@PathVariable String phone, @PathVariable String time, @PathVariable String api_key, @PathVariable String sign,
-                           @RequestBody SystemMsgBean systemMsg)
+    public JSONObject list
+        (
+            @PathVariable String phone,
+            @PathVariable String time,
+            @PathVariable String api_key,
+            @PathVariable String sign,
+            @RequestParam(value = "id",defaultValue = "") Long id
+        )
     {
         returnJson.clear();
         // 标识，默认为true
@@ -65,6 +71,7 @@ public class SystemMsgController extends BaseController
                 private static final long serialVersionUID = 2138548644834576384L;
                 {
                     put("phone",phone);
+                    put("id",id);
                     put(SecurityUtils._TIME, time);
                     put(SecurityUtils._API_KEY, api_key);
                     put(SecurityUtils._CLIENT_IP, SecurityUtils.getCliectIp(request));
@@ -72,7 +79,7 @@ public class SystemMsgController extends BaseController
                 }
             })) {
                 // 执行查询消息列表
-                List<SystemMsgBean> msgs = systemMsgService.findByUser(phone,systemMsg);
+                List<SystemMsgBean> msgs = systemMsgService.findByUser(phone,id);
                 //设置返回消息列表
                 returnJson.put(RETURN_RESULT, msgs);
             }

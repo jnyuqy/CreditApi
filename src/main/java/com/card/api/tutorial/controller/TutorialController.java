@@ -42,17 +42,28 @@ public class TutorialController extends BaseController
      * @param time 时间戳
      * @param api_key 授权码
      * @param sign 签名
-     * @param tutorial 教程查询实体
      * @return
      */
     @ApiOperation(value = "查询教程列表", notes = "可查询出具体条数")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "tutorial", value = "查询实体,id=>根据主键查询详情 | type=>4查询头条新闻时同时要设置size=>1", dataType = "TutorialBean", required = true),
+            @ApiImplicitParam(name = "id", value = "id=>根据主键查询详情", dataType = "Long"),
+            @ApiImplicitParam(name = "type", value = "教程类型,1：信用卡攻略，2：信用卡须知，3：达人专栏，4：信用卡新闻，5：信用卡评测报告[默认为1]", dataType = "Integer"),
+            @ApiImplicitParam(name = "size",value = "分页属性：一页数据条数[默认20]",dataType = "Integer"),
+            @ApiImplicitParam(name = "page",value = "分页属性：当前页码[默认1]",dataType = "Integer"),
             @ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String", required = true),
             @ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
             @ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String", required = true) })
     @RequestMapping(value = "/{time}/{api_key}/{sign}", method = { RequestMethod.POST })
-    public JSONObject list( @PathVariable String time, @PathVariable String api_key, @PathVariable String sign, @RequestBody TutorialBean tutorial)
+    public JSONObject list
+        (
+                @RequestParam(value = "id",defaultValue = "") Long id,
+                @RequestParam(value = "type",required = true) Integer type,
+                @RequestParam(value = "size",defaultValue = "20") Integer size ,
+                @RequestParam(value = "page",defaultValue = "1") Integer page ,
+                @PathVariable String time,
+                @PathVariable String api_key,
+                @PathVariable String sign
+        )
     {
         returnJson.clear();
         // 标识，默认为true
@@ -65,6 +76,8 @@ public class TutorialController extends BaseController
                  */
                 private static final long serialVersionUID = 2138548644834576384L;
                 {
+                    put("id",id);
+                    put("type",type);
                     put(SecurityUtils._TIME, time);
                     put(SecurityUtils._API_KEY, api_key);
                     put(SecurityUtils._CLIENT_IP, SecurityUtils.getCliectIp(request));
@@ -72,7 +85,7 @@ public class TutorialController extends BaseController
                 }
             })) {
                 // 执行查询消息列表
-                List<TutorialBean> tutorials = tutorialService.list(tutorial);
+                List<TutorialBean> tutorials = tutorialService.list(id,type,page,size);
                 //设置返回消息列表
                 returnJson.put(RETURN_RESULT, tutorials);
             }

@@ -4,11 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSONObject;
 import com.card.api.bank.bean.BankBean;
@@ -70,13 +66,25 @@ public class BankController extends BaseController{
 	 */
 	@ApiOperation(value = "查询银行列表", notes = "可根据条件查询热门银行，条数")
 	@ApiImplicitParams(value = {
-			@ApiImplicitParam(name = "bank", value = "查询实体,size : 查询条数,name : 银行名称,hot : 热门(1热门银行，0非热门)", dataType = "BankBean"),
+			@ApiImplicitParam(name = "name", value = "name : 银行名称",dataType = "String"),
+			@ApiImplicitParam(name = "hot", value = "hot : 热门(1热门银行，0非热门)[默认1]",dataType = "Integer"),
+			@ApiImplicitParam(name = "size",value = "分页属性：一页数据条数[默认20]",dataType = "Integer"),
+			@ApiImplicitParam(name = "page",value = "分页属性：当前页码[默认1]",dataType = "Integer"),
 			@ApiImplicitParam(name = "time", value = "时间戳,如：1321234992963601", dataType = "String", required = true),
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String", required = true) })
-	@RequestMapping(value = "/{time}/{api_key}/{sign}", method = { RequestMethod.POST })
-	public JSONObject list(@PathVariable String time, @PathVariable String api_key, @PathVariable String sign,
-			@RequestBody BankBean bank) {
+	@RequestMapping(value = "/{time}/{api_key}/{sign}", method = { RequestMethod.GET })
+	public JSONObject list
+		(
+				@RequestParam(value = "name",defaultValue = "") String name,
+				@RequestParam(value = "hot",defaultValue = "1") String hot,
+				@RequestParam(value = "size",defaultValue = "20") Integer size ,
+				@RequestParam(value = "page",defaultValue = "1") Integer page ,
+				@PathVariable String time,
+				@PathVariable String api_key,
+				@PathVariable String sign
+		)
+	{
 		returnJson.clear();
 		// 标识，默认为true
 		boolean flag = true;
@@ -88,12 +96,24 @@ public class BankController extends BaseController{
 				 */
 				private static final long serialVersionUID = 2138548644834576384L;
 				{
+					put("name",name);
+					put("hot",hot);
 					put(SecurityUtils._TIME, time);
 					put(SecurityUtils._API_KEY, api_key);
 					put(SecurityUtils._CLIENT_IP, SecurityUtils.getCliectIp(request));
 					put(SecurityUtils._SIGN, sign);
 				}
 			})) {
+				//采集数据
+				BankBean bank = new BankBean();
+				//热度
+				bank.setHot(hot);
+				//名称
+				bank.setName(name);
+				//每页数量
+				bank.setSize(size);
+				//当前页码
+				bank.setPage(page);
 				// 执行发送短信
 				List<BankBean> banks = bankService.list(bank);
 				//设置返回验证码
@@ -128,20 +148,23 @@ public class BankController extends BaseController{
 	 *            apikey<br>
 	 * @param sign
 	 *            签名<br>
-	 * @param bankService
 	 *            银行服务实体<br>
 	 * @return<br>
 	 * @return JSONObject
 	 */
 	@ApiOperation(value = "查询银行服务列表", notes = "根据银行编号查询银行服务列表")
 	@ApiImplicitParams(value = {
-			@ApiImplicitParam(name = "bankService", value = "查询实体,bank.id => 银行编号", dataType = "BankServiceBean"),
+			@ApiImplicitParam(name = "bankId", value = "银行编号", dataType = "Long",required = true),
 			@ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String", required = true),
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String", required = true) })
-	@RequestMapping(value = "/service/{time}/{api_key}/{sign}", method = { RequestMethod.POST })
-	public JSONObject service(@PathVariable String time, @PathVariable String api_key, @PathVariable String sign,
-			@RequestBody BankServiceBean bankService) {
+	@RequestMapping(value = "/service/{time}/{api_key}/{sign}", method = { RequestMethod.GET })
+	public JSONObject service
+		(
+				@PathVariable String time,
+				@PathVariable String api_key,
+				@PathVariable String sign,
+				@RequestParam(value = "bankId",required = true) Long bankId) {
 		returnJson.clear();
 		// 标识，默认为true
 		boolean flag = true;
@@ -153,12 +176,19 @@ public class BankController extends BaseController{
 				 */
 				private static final long serialVersionUID = 2138548644834576384L;
 				{
+					put("bankId",bankId);
 					put(SecurityUtils._TIME, time);
 					put(SecurityUtils._API_KEY, api_key);
 					put(SecurityUtils._CLIENT_IP, SecurityUtils.getCliectIp(request));
 					put(SecurityUtils._SIGN, sign);
 				}
 			})) {
+				//数据采集
+				BankServiceBean bankService = new BankServiceBean();
+				BankBean bank = new BankBean();
+				bank.setId(bankId);
+				//设置查询银行
+				bankService.setBank(bank);
 				// 执行查询银行服务
 				List<BankServiceBean> services = bankServiceService.list(bankService);
 				//设置返回服务列表

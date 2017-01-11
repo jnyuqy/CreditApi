@@ -2,6 +2,7 @@ package com.card.api.opinion.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.card.api.opinion.bean.OpinionBean;
+import com.card.api.opinion.bean.OpinionTypeBean;
 import com.card.api.opinion.service.OpinionService;
 import com.card.api.utils.SecurityUtils;
 import com.card.core.constants.SysMsgConstants;
@@ -43,14 +44,23 @@ public class OpinionController extends BaseController
      */
     @ApiOperation(value = "添加反馈", notes = "添加反馈意见")
     @ApiImplicitParams(value = {
-        @ApiImplicitParam(name = "phone", value = "手机号码", dataType = "String",required = true),
-        @ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String",required = true),
-        @ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String",required = true),
-        @ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String",required = true)
+            @ApiImplicitParam(name = "typeId", value = "反馈类型", dataType = "Long",required = true),
+            @ApiImplicitParam(name = "content", value = "反馈内容", dataType = "String",required = true),
+            @ApiImplicitParam(name = "phone", value = "手机号码", dataType = "String",required = true),
+            @ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String",required = true),
+            @ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String",required = true),
+            @ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String",required = true)
     })
     @RequestMapping(value = "/add/{phone}/{time}/{api_key}/{sign}", method = RequestMethod.POST)
-    public JSONObject add(@PathVariable String phone, @PathVariable String time, @PathVariable String api_key,
-                          @PathVariable String sign, @RequestBody OpinionBean opinionBean)
+    public JSONObject add
+    (
+            @PathVariable String phone,
+            @PathVariable String time,
+            @PathVariable String api_key,
+            @PathVariable String sign,
+            @RequestParam(value = "typeId",required = true) Long typeId,
+            @RequestParam(value = "content",required = true) String content
+    )
     {
         //清空集合
         returnJson.clear();
@@ -65,6 +75,8 @@ public class OpinionController extends BaseController
                 private static final long serialVersionUID = 2138548644834576384L;
                 {
                     put("phone", phone);
+                    put("typeId", typeId);
+                    put("content", content);
                     put(SecurityUtils._TIME, time);
                     put(SecurityUtils._API_KEY, api_key);
                     put(SecurityUtils._CLIENT_IP, SecurityUtils.getCliectIp(request));
@@ -72,6 +84,12 @@ public class OpinionController extends BaseController
                 }
             }))
             {
+                //收集反馈意见
+                OpinionBean opinionBean = new OpinionBean();
+                //设置类型编号
+                opinionBean.setType(new OpinionTypeBean(typeId));
+                //反馈内容
+                opinionBean.setContent(content);
                 // 执行添加意见反馈业务
                 opinionService.add(phone,opinionBean);
             }

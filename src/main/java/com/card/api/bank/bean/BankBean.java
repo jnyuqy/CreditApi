@@ -15,6 +15,12 @@ import com.card.core.bean.BaseBean;
 @Table(name = TableConstants.SYSTEM_BANK_INFO)
 public class BankBean extends BaseBean {
 
+	public BankBean(){}
+
+	public BankBean(Long id){
+		this.id = id;
+	}
+
 	/**
 	 * (序列号) {@value}
 	 */

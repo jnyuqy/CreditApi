@@ -44,7 +44,7 @@ public class SystemMsgService extends BaseService<SystemMsgBean>{
      * 查询用户下的所有消息包含用户消息，系统消息
      * @return
      */
-    public List<SystemMsgBean> findByUser(String phone,SystemMsgBean msgBean)
+    public List<SystemMsgBean> findByUser(String phone,Long id)
     {
         //验证参数有效性
         if(ValidatorUtils.isEmpty(phone) || !ValidatorUtils.isMobile(phone)) {
@@ -68,9 +68,9 @@ public class SystemMsgService extends BaseService<SystemMsgBean>{
         //添加根据用户编号查询
         expressions[0] = QSystemMsgUserUniBean.systemMsgUserUniBean.userId.eq(userBean.getId());
         //添加根据消息编号查询
-        if(!ValidatorUtils.isEmpty(msgBean) && !ValidatorUtils.isEmpty(msgBean.getId()))
+        if(!ValidatorUtils.isEmpty(id))
         {
-            expressions[1] = QSystemMsgUserUniBean.systemMsgUserUniBean.messId.eq(msgBean.getId());
+            expressions[1] = QSystemMsgUserUniBean.systemMsgUserUniBean.messId.eq(id);
         }
         //追加where条件使用默认and链接
         jpaQuery.where(expressions);

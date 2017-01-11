@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,9 +73,16 @@ public class UserController extends BaseController{
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String",required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String",required = true)
 	})
-	@RequestMapping(value = "/login/{name}/{pwd}/{time}/{api_key}/{sign}", method = RequestMethod.GET)
-	public JSONObject login(@PathVariable String name, @PathVariable String pwd, @PathVariable String time,
-			@PathVariable String api_key, @PathVariable String sign) {
+	@RequestMapping(value = "/login/{time}/{api_key}/{sign}", method = RequestMethod.GET)
+	public JSONObject login
+		(
+				@PathVariable String name,
+				@PathVariable String pwd,
+				@PathVariable String time,
+				@PathVariable String api_key,
+				@PathVariable String sign
+		)
+	{
 		//登录对象
 		UserBean user = new UserBean();
 		//标识，默认为true
@@ -151,8 +157,14 @@ public class UserController extends BaseController{
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String", required = true) })
 	@RequestMapping(value = "/register/{phone}/{time}/{api_key}/{sign}", method = RequestMethod.POST)
-	public JSONObject register(@PathVariable String phone, @PathVariable String time, @PathVariable String api_key,
-			@PathVariable String sign) {
+	public JSONObject register
+		(
+				@PathVariable String phone,
+				@PathVariable String time,
+				@PathVariable String api_key,
+			    @PathVariable String sign
+		)
+	{
 		//登录对象
 		UserBean user = new UserBean();
 		//标识，默认为true
@@ -224,9 +236,16 @@ public class UserController extends BaseController{
 			@ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String", required = true),
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String", required = true) })
-	@RequestMapping(value = "/modifyPwd/{time}/{api_key}/{sign}", method = RequestMethod.PUT)
-	public JSONObject modifyPwd(@PathVariable String time,
-			@PathVariable String api_key, @PathVariable String sign,@RequestBody UserBean user) {
+	@RequestMapping(value = "/modifyPwd/{phone}/{time}/{api_key}/{sign}", method = RequestMethod.POST)
+	public JSONObject modifyPwd
+		(
+				@PathVariable String time,
+				@PathVariable String api_key,
+				@PathVariable String sign,
+				@PathVariable String phone,
+				@RequestParam(value = "pwd",required = true) String pwd
+		)
+	{
 		//标识，默认为true
 		boolean flag = true;
 		//清空集合
@@ -239,8 +258,8 @@ public class UserController extends BaseController{
 				 */
 				private static final long serialVersionUID = 2138548644834576384L;
 				{
-					put("phone", user.getPhone());
-					put("pwd", user.getPwd());
+					put("phone", phone);
+					put("pwd", pwd);
 					put(SecurityUtils._TIME, time);
 					put(SecurityUtils._API_KEY, api_key);
 					put(SecurityUtils._CLIENT_IP, SecurityUtils.getCliectIp(request));
@@ -248,6 +267,10 @@ public class UserController extends BaseController{
 				}
 			})) 
 			{
+				UserBean user = new UserBean();
+				user.setPhone(phone);
+				user.setPwd(pwd);
+
 				// 执行修改密码
 				userService.modifyPwd(user);
 			}
@@ -281,8 +304,6 @@ public class UserController extends BaseController{
 	 *            api_key<br>
 	 * @param sign
 	 *            签名<br>
-	 * @param user
-	 *            请求对象<br>
 	 * @return<br>
 	 * @return JSONObject 返回对象
 	 */
@@ -293,9 +314,16 @@ public class UserController extends BaseController{
 			@ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String", required = true),
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,(参数列表+time+api_key)生成url串首字母排序正序=sign", dataType = "String", required = true) })
-	@RequestMapping(value = "/modifyNickName/{time}/{api_key}/{sign}", method = RequestMethod.PUT)
-	public JSONObject modifyNickName(@PathVariable String time, @PathVariable String api_key, @PathVariable String sign,
-			@RequestBody UserBean user) {
+	@RequestMapping(value = "/modifyNickName/{phone}/{time}/{api_key}/{sign}", method = RequestMethod.POST)
+	public JSONObject modifyNickName
+		(
+			@PathVariable String time,
+			@PathVariable String api_key,
+			@PathVariable String sign,
+			@PathVariable String phone,
+			@RequestParam(value = "nickName",required = true) String nickName
+		)
+	{
 		//标识，默认为true
 		boolean flag = true;
 		//清空集合
@@ -308,8 +336,8 @@ public class UserController extends BaseController{
 				 */
 				private static final long serialVersionUID = 2138548644834576384L;
 				{
-					put("phone", user.getPhone());
-					put("nickName", user.getNickName());
+					put("phone", phone);
+					put("nickName", nickName);
 					put(SecurityUtils._TIME, time);
 					put(SecurityUtils._API_KEY, api_key);
 					put(SecurityUtils._CLIENT_IP, SecurityUtils.getCliectIp(request));
@@ -317,6 +345,10 @@ public class UserController extends BaseController{
 				}
 			})) 
 			{
+				UserBean user = new UserBean();
+				user.setPhone(phone);
+				user.setNickName(nickName);
+
 				// 执行修改昵称
 				userService.modifyNickName(user);
 			}
@@ -350,7 +382,6 @@ public class UserController extends BaseController{
 	 *            api_key<br>
 	 * @param sign
 	 *            签名<br>
-	 * @param user
 	 *            用户对象,requestBody<br>
 	 * @return<br>
 	 * @return JSONObject
@@ -362,9 +393,16 @@ public class UserController extends BaseController{
 			@ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String", required = true),
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,(参数列表+time+api_key)生成url串首字母排序正序=sign", dataType = "String", required = true) })
-	@RequestMapping(value = "/modifyMail/{time}/{api_key}/{sign}", method = RequestMethod.PUT)
-	public JSONObject modifyMail(@PathVariable String time, @PathVariable String api_key, @PathVariable String sign,
-			@RequestBody UserBean user) {
+	@RequestMapping(value = "/modifyMail/{phone}/{time}/{api_key}/{sign}", method = RequestMethod.POST)
+	public JSONObject modifyMail
+		(
+			@PathVariable String time,
+			@PathVariable String api_key,
+			@PathVariable String sign,
+			@PathVariable String phone,
+			@RequestParam(value = "mail",required = true) String mail
+		)
+	{
 		//标识，默认为true
 		boolean flag = true;
 		//清空集合
@@ -377,8 +415,8 @@ public class UserController extends BaseController{
 				 */
 				private static final long serialVersionUID = 2138548644834576384L;
 				{
-					put("phone", user.getPhone());
-					put("mail", user.getMail());
+					put("phone", phone);
+					put("mail", mail);
 					put(SecurityUtils._TIME, time);
 					put(SecurityUtils._API_KEY, api_key);
 					put(SecurityUtils._CLIENT_IP, SecurityUtils.getCliectIp(request));
@@ -386,7 +424,11 @@ public class UserController extends BaseController{
 				}
 			})) 
 			{
-				// 执行邮箱
+				UserBean user = new UserBean();
+				user.setPhone(phone);
+				user.setMail(mail);
+
+				// 执行修改邮箱
 				userService.modifyMail(user);
 			}
 		}
@@ -434,8 +476,13 @@ public class UserController extends BaseController{
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,(参数列表+time+api_key)生成url串首字母排序正序=sign", dataType = "String", required = true) })
 	@RequestMapping(value = "/uploadHeadImg/{phone}/{time}/{api_key}/{sign}", consumes = "multipart/form-data", method = RequestMethod.POST)
-	public JSONObject uploadHeadImg(@PathVariable String phone, @PathVariable String time, @PathVariable String api_key,
-			@PathVariable String sign, @RequestParam("file") CommonsMultipartFile file) {
+	public JSONObject uploadHeadImg
+		(
+				@PathVariable String phone,
+				@PathVariable String time,
+				@PathVariable String api_key,
+				@PathVariable String sign,
+				@RequestParam("file") CommonsMultipartFile file) {
 		//标识，默认为true
 		boolean flag = true;
 		//清空集合

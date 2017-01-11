@@ -7,6 +7,7 @@ import com.card.core.criteria.Criteria;
 import com.card.core.criteria.Restrictions;
 import com.card.core.service.BaseService;
 import com.card.core.utils.JSONUtils;
+import com.card.core.utils.ParseUtils;
 import com.card.core.utils.ValidatorUtils;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
@@ -42,35 +43,37 @@ public class TutorialService extends BaseService<TutorialBean>
     /**
      * 查询出教程列表
      * 可根据条数
-     * @param tutorialBean 教程查询实体
      * @return
      */
-    public List<TutorialBean> list(TutorialBean tutorialBean)
+    public List<TutorialBean> list(Object...params)
     {
+        //主键
+        Object id = params[0];
+        //类型
+        Object type = params[1];
+        //分页属性
+        Integer page = ParseUtils.toInteger(params[2]);
+        //分页属性
+        Integer size = ParseUtils.toInteger(params[3]);
+
         //构建查询实体
         QTutorialBean _query = QTutorialBean.tutorialBean;
         BooleanExpression expression = null;
         //如果主键编号不为空，根据主键查询
-        if(!ValidatorUtils.isEmpty(tutorialBean.getId()))
+        if(!ValidatorUtils.isEmpty(id))
         {
-            expression = _query.id.eq(tutorialBean.getId());
+            expression = _query.id.eq(Long.valueOf(ParseUtils.toString(id)));
         }
         //如果类型不为空，根据类型查询
-        if(!ValidatorUtils.isZero(tutorialBean.getType()))
+        if(!ValidatorUtils.isZero(ParseUtils.toInteger(type)))
         {
-            if(expression == null) expression = _query.type.eq(tutorialBean.getType());
-            else if (expression != null) expression.and(_query.type.eq(tutorialBean.getType()));
-        }
-        //如果标签不为空,根据标签查询
-        if(!ValidatorUtils.isEmpty(tutorialBean.getTag()) && tutorialBean.getTag().getId() != 0)
-        {
-            if(expression == null) expression = _query.tag.id.eq(tutorialBean.getTag().getId());
-            else if (expression != null) expression.and(_query.tag.id.eq(tutorialBean.getTag().getId()));
+            if(expression == null) expression = _query.type.eq(ParseUtils.toInteger(type));
+            else if (expression != null) expression = expression.and(_query.type.eq(ParseUtils.toInteger(type)));
         }
         //根据点击量排序
         Sort sort = new Sort(Sort.Direction.DESC, "clickCount");
         //分页对象
-        Pageable pageable = new PageRequest(tutorialBean.getPage() - 1, tutorialBean.getSize(),sort);
+        Pageable pageable = new PageRequest(page - 1, size,sort);
         //返回对象
         return tutorialDAO.findAll(expression,pageable).getContent();
     }

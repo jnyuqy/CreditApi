@@ -3,8 +3,10 @@ package com.card.api.bank.service;
 import java.util.List;
 
 import com.card.api.bank.bean.QBankBean;
+import com.card.core.utils.JSONUtils;
 import com.card.core.utils.ValidatorUtils;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -47,16 +49,17 @@ public class BankService extends BaseService<BankBean>{
 	 */
 	public List<BankBean> list(BankBean bank)
 	{
+		System.out.println(JSONUtils.toJSONString(bank));
 		//银行查询实体构建
 		QBankBean _bank = QBankBean.bankBean;
 		//查询条件接口
-		Predicate predicate = null;
+		BooleanExpression expression = _bank.hot.eq(bank.getHot());
 		//如果银行名称不为空，根据名称查询
 		if(!ValidatorUtils.isEmpty(bank.getName())) {
-			predicate = _bank.name.eq(bank.getName());
+			expression = expression.and(_bank.name.eq(bank.getName()));
 		}
 		//返回分页数据
-		return bankDAO.findAll(predicate,new PageRequest(bank.getPage() - 1, bank.getSize())).getContent();
+		return bankDAO.findAll(expression,new PageRequest(bank.getPage() - 1, bank.getSize())).getContent();
 	}
 	
 	@Override

@@ -20,6 +20,10 @@ import javax.persistence.*;
 @Table(name = TableConstants.COMMON_COMMON_OPINION_TYPE)
 public class OpinionTypeBean extends BaseBean
 {
+    public OpinionTypeBean(Long id)
+    {
+        this.id = id;
+    }
     @Id
     @GeneratedValue
     @Column(name = "cot_id")

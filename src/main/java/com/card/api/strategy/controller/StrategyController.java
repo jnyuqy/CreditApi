@@ -66,13 +66,16 @@ public class StrategyController extends BaseController{
 			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String", required = true)
 	})
 	@RequestMapping(value = "/{time}/{api_key}/{sign}", method = { RequestMethod.GET })
-	public JSONObject list(@RequestParam(value = "id",defaultValue = "") Long id,
-						   @RequestParam(value = "hot",defaultValue = "") Integer hot,
-						   @RequestParam(value = "size",defaultValue = "20") Integer size ,
-						   @RequestParam(value = "page",defaultValue = "1") Integer page ,
-						   @PathVariable String time,
-						   @PathVariable String api_key,
-						   @PathVariable String sign)
+	public JSONObject list
+		(
+				@RequestParam(value = "id",defaultValue = "") Long id,
+				@RequestParam(value = "hot",defaultValue = "") Integer hot,
+				@RequestParam(value = "size",defaultValue = "20") Integer size ,
+				@RequestParam(value = "page",defaultValue = "1") Integer page ,
+				@PathVariable String time,
+				@PathVariable String api_key,
+				@PathVariable String sign
+		)
 	{
 		returnJson.clear();
 		// 标识，默认为true
