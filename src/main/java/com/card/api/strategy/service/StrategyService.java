@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.card.api.strategy.bean.QStrategyBean;
+import com.card.core.utils.ParseUtils;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -46,22 +49,37 @@ public class StrategyService extends BaseService<StrategyBean> {
 	 * 查询动态列表<br>
 	 * 2017年1月6日 上午11:42:30<br>
 	 * list<br>
-	 * 
-	 * @param strategy<br>
+	 *
 	 * @return<br>
 	 * @return List<StrategyBean>
 	 */
-	public List<StrategyBean> list(StrategyBean strategy)
+	public List<StrategyBean> list(Object...params)
 	{
-		//创建查询对象
-		Criteria<StrategyBean> criteria = new Criteria<>();
-		//添加根据主键查询
-		criteria.add(Restrictions.eq("id", strategy.getId()));
+		//主键
+		Object id = params[0];
+		//分页属性
+		Object size = params[1];
+		//分页属性
+		Object page = params[2];
+		//热门
+		Object hot = params[3];
+
+		QStrategyBean _query = QStrategyBean.strategyBean;
+		//查询条件
+		BooleanExpression expression = null;
+		//追加主键查询
+		if(!ValidatorUtils.isEmpty(id) && !ValidatorUtils.isZero(ParseUtils.toInteger(id))) {
+			expression = _query.id.eq(Long.valueOf(ParseUtils.toString(id)));
+		}
+
 		//设置排序对象参数
-		Sort sort = ValidatorUtils.isZero(strategy.getHot()) ? new Sort(Direction.DESC, "id")
+		Sort sort = ValidatorUtils.isEmpty(hot) ? new Sort(Direction.DESC, "id")
 				: new Sort(Direction.DESC, "clickCount");
 		//执行查询
-		return strategyDAO.findAll(criteria, new PageRequest(strategy.getPage() - 1, strategy.getSize(),sort)).getContent();
+		return strategyDAO.findAll(
+				expression,
+				new PageRequest(ParseUtils.toInteger(page) - 1, ParseUtils.toInteger(size),sort)
+		).getContent();
 	}
 	
 	@Override

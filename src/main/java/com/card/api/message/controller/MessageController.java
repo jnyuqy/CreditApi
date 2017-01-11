@@ -1,6 +1,6 @@
 package com.card.api.message.controller;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,7 +72,7 @@ public class MessageController extends BaseController {
 		boolean flag = true;
 		try {
 			// 验证接口是否有权访问
-			if (SecurityUtils.validate(new Hashtable<String, Object>() {
+			if (SecurityUtils.validate(new HashMap<String, Object>() {
 				/**
 				 * 序列号
 				 */

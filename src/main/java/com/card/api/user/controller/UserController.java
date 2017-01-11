@@ -1,6 +1,6 @@
 package com.card.api.user.controller;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -85,7 +85,7 @@ public class UserController extends BaseController{
 		returnJson.clear();
 		try {
 			//验证接口是否有权访问
-			if (SecurityUtils.validate(new Hashtable<String, Object>() {
+			if (SecurityUtils.validate(new HashMap<String, Object>() {
 				/**
 				 * 序列号
 				 */
@@ -161,7 +161,7 @@ public class UserController extends BaseController{
 		returnJson.clear();
 		try {
 			//验证接口是否有权访问
-			if (SecurityUtils.validate(new Hashtable<String, Object>() {
+			if (SecurityUtils.validate(new HashMap<String, Object>() {
 				/**
 				 * 序列号
 				 */
@@ -206,10 +206,7 @@ public class UserController extends BaseController{
 	 * 修改用户密码<br>
 	 * 2017年1月4日 下午3:44:59<br>
 	 * modifyPwd<br>
-	 * 
-	 * @param phone
-	 *            手机号码<br>
-	 * @param pwd
+	 *
 	 *            新密码<br>
 	 * @param time
 	 *            时间戳<br>
@@ -236,7 +233,7 @@ public class UserController extends BaseController{
 		returnJson.clear();
 		try {
 			//验证接口是否有权访问
-			if (SecurityUtils.validate(new Hashtable<String, Object>() {
+			if (SecurityUtils.validate(new HashMap<String, Object>() {
 				/**
 				 * 序列号
 				 */
@@ -305,7 +302,7 @@ public class UserController extends BaseController{
 		returnJson.clear();
 		try {
 			//验证接口是否有权访问
-			if (SecurityUtils.validate(new Hashtable<String, Object>() {
+			if (SecurityUtils.validate(new HashMap<String, Object>() {
 				/**
 				 * 序列号
 				 */
@@ -374,7 +371,7 @@ public class UserController extends BaseController{
 		returnJson.clear();
 		try {
 			//验证接口是否有权访问
-			if (SecurityUtils.validate(new Hashtable<String, Object>() {
+			if (SecurityUtils.validate(new HashMap<String, Object>() {
 				/**
 				 * 序列号
 				 */
@@ -445,7 +442,7 @@ public class UserController extends BaseController{
 		returnJson.clear();
 		try {
 			//验证接口是否有权访问
-			if (SecurityUtils.validate(new Hashtable<String, Object>() {
+			if (SecurityUtils.validate(new HashMap<String, Object>() {
 				/**
 				 * 序列号
 				 */

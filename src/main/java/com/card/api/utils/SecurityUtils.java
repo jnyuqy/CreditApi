@@ -1,11 +1,6 @@
 package com.card.api.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,7 +67,7 @@ public class SecurityUtils {
 	//签名
 	public static String _SIGN = "sign";
 	//参数列表
-	private static Hashtable<String, Object> params;
+	private static HashMap<String, Object> params;
 	//生成签名时的追加字符串
 	private static final String SIGN_XX = "xunmei@keji.com";
 	
@@ -116,7 +111,7 @@ public class SecurityUtils {
 	 * @return
 	 * @return boolean
 	 */
-	public static synchronized boolean validate(Hashtable<String, Object> params) throws LogicException{
+	public static synchronized boolean validate(HashMap<String, Object> params) throws LogicException{
 		//参数赋值
 		SecurityUtils.params = params;
 		System.out.print(JSONUtils.toJSONString(params));
@@ -211,7 +206,14 @@ public class SecurityUtils {
 		Iterator<String> iterator = params.keySet().iterator();
 		while(iterator.hasNext())
 		{
-			_temp_param_keys.add(iterator.next());
+			//获取key
+			String key = iterator.next();
+			//获取值
+			Object val = params.get(key);
+			//当值不为空
+			if(!ValidatorUtils.isEmpty(val)) {
+				_temp_param_keys.add(key);
+			}
 		}
 		//排序集合
 		Collections.sort(_temp_param_keys);

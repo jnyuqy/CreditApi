@@ -1,6 +1,6 @@
 package com.card.api.remind.controller;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +80,7 @@ public class RemindController extends BaseController{
 		returnJson.clear();
 		try {
 			//验证接口是否有权访问
-			if (SecurityUtils.validate(new Hashtable<String, Object>() {
+			if (SecurityUtils.validate(new HashMap<String, Object>() {
 				/**
 				 * 序列号
 				 */
@@ -127,7 +127,6 @@ public class RemindController extends BaseController{
 	 *            apikey<br>
 	 * @param sign
 	 *            签名<br>
-	 * @param remind
 	 *            查询实体<br>
 	 * @return<br>
 	 * @return JSONObject
@@ -148,7 +147,7 @@ public class RemindController extends BaseController{
 		returnJson.clear();
 		try {
 			//验证接口是否有权访问
-			if (SecurityUtils.validate(new Hashtable<String, Object>() {
+			if (SecurityUtils.validate(new HashMap<String, Object>() {
 				/**
 				 * 序列号
 				 */
