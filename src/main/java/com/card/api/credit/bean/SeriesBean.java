@@ -159,7 +159,7 @@ public class SeriesBean extends BaseBean {
 	//关联信用卡系列特权列表
 	@OneToMany
 	@JoinTable(
-			name = "c_credir_series_privilege_uni",
+			name = "c_credit_series_privilege_uni",
 			joinColumns = {@JoinColumn(name = "ccspu_series_id")},
 			inverseJoinColumns = {@JoinColumn(name = "ccspu_privilege_id")})
 	private List<PrivilegeBean> privileges;

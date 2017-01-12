@@ -67,7 +67,7 @@ public class BankController extends BaseController{
 	@ApiOperation(value = "查询银行列表", notes = "可根据条件查询热门银行，条数")
 	@ApiImplicitParams(value = {
 			@ApiImplicitParam(name = "name", value = "name : 银行名称",dataType = "String"),
-			@ApiImplicitParam(name = "hot", value = "hot : 热门(1热门银行，0非热门)[默认1]",dataType = "Integer"),
+			@ApiImplicitParam(name = "hot", value = "hot : 热门(1热门银行，0非热门)[默认查询全部]",required = true,dataType = "Integer"),
 			@ApiImplicitParam(name = "size",value = "分页属性：一页数据条数[默认20]",dataType = "Integer"),
 			@ApiImplicitParam(name = "page",value = "分页属性：当前页码[默认1]",dataType = "Integer"),
 			@ApiImplicitParam(name = "time", value = "时间戳,如：1321234992963601", dataType = "String", required = true),
@@ -77,7 +77,7 @@ public class BankController extends BaseController{
 	public JSONObject list
 		(
 				@RequestParam(value = "name",defaultValue = "") String name,
-				@RequestParam(value = "hot",defaultValue = "1") String hot,
+				@RequestParam(value = "hot",defaultValue = "") String hot,
 				@RequestParam(value = "size",defaultValue = "20") Integer size ,
 				@RequestParam(value = "page",defaultValue = "1") Integer page ,
 				@PathVariable String time,

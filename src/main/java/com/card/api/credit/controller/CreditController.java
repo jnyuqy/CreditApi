@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 信用卡api接口
@@ -35,19 +36,39 @@ public class CreditController extends BaseController
     @Autowired
     private CreditService creditService;
 
-    @ApiOperation(value = "修改用户邮箱", notes = "修改用户邮箱")
+    @ApiOperation(value = "查询信用卡列表", notes = "查询信用卡列表")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "id", value = "信用卡编号", dataType = "String", required = true),
+            @ApiImplicitParam(name = "bankId", value = "银行编号", dataType = "Long"),
+            @ApiImplicitParam(name = "useId", value = "用途编号", dataType = "Long"),
+            @ApiImplicitParam(name = "levelId", value = "等级编号", dataType = "Long"),
+            @ApiImplicitParam(name = "yearMoney", value = "年费政策类型，1：终身免年费，2：交易免年费", dataType = "Long"),
+            @ApiImplicitParam(name = "moneyType", value = "币种，1：人民币，2：美元，3：其他", dataType = "String"),
+            @ApiImplicitParam(name = "organId", value = "信用卡组织编号", dataType = "Long"),
+            @ApiImplicitParam(name = "privilegeId", value = "特权编号", dataType = "Long"),
+            @ApiImplicitParam(name = "color", value = "卡面颜色：1 金色, 2 红色, 3 蓝色, 4 绿色, 5 黑色, 6 白色, 7 彩色", dataType = "Long"),
+            @ApiImplicitParam(name = "themeId", value = "卡面主题编号", dataType = "Long"),
+            @ApiImplicitParam(name = "size",value = "分页属性：一页数据条数【默认20】",dataType = "Integer"),
+            @ApiImplicitParam(name = "page",value = "分页属性：当前页码【默认1】",dataType = "Integer"),
             @ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String", required = true),
             @ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
             @ApiImplicitParam(name = "sign", value = "签名,(参数列表+time+api_key)生成url串首字母排序正序=sign", dataType = "String", required = true) })
-    @RequestMapping(value = "/{time}/{api_key}/{sign}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{time}/{api_key}/{sign}", method = RequestMethod.GET)
     public JSONObject list
             (
                     @PathVariable String time,
                     @PathVariable String api_key,
                     @PathVariable String sign,
-                    @RequestParam(value = "id",defaultValue = "") Long id
+                    @RequestParam(value = "bankId",defaultValue = "") Long bankId,
+                    @RequestParam(value = "useId",defaultValue = "") Long useId,
+                    @RequestParam(value = "levelId",defaultValue = "") Long levelId,
+                    @RequestParam(value = "yearMoney",defaultValue = "") Long yearMoney,
+                    @RequestParam(value = "moneyType",defaultValue = "") String moneyType,
+                    @RequestParam(value = "organId",defaultValue = "") Long organId,
+                    @RequestParam(value = "privilegeId",defaultValue = "") Long privilegeId,
+                    @RequestParam(value = "color",defaultValue = "") Long color,
+                    @RequestParam(value = "themeId",defaultValue = "") Long themeId,
+                    @RequestParam(value = "size",defaultValue = "20") Integer size ,
+                    @RequestParam(value = "page",defaultValue = "1") Integer page
             )
     {
         //标识，默认为true
@@ -62,7 +83,15 @@ public class CreditController extends BaseController
                  */
                 private static final long serialVersionUID = 2138548644834576384L;
                 {
-                    put("id", id);
+                    put("bankId", bankId);
+                    put("useId", useId);
+                    put("levelId", levelId);
+                    put("yearMoney", yearMoney);
+                    put("moneyType", moneyType);
+                    put("organId", organId);
+                    put("privilegeId", privilegeId);
+                    put("color", color);
+                    put("themeId", themeId);
                     put(SecurityUtils._TIME, time);
                     put(SecurityUtils._API_KEY, api_key);
                     put(SecurityUtils._CLIENT_IP, SecurityUtils.getCliectIp(request));
@@ -70,8 +99,22 @@ public class CreditController extends BaseController
                 }
             }))
             {
-                CreditBean credit = creditService.findById(id);
-                returnJson.put(RETURN_RESULT,credit);
+                //返回信用卡列表
+                List<HashMap<String,Object>> result = creditService.list
+                        (
+                                bankId,
+                                useId,
+                                levelId,
+                                yearMoney,
+                                moneyType,
+                                organId,
+                                privilegeId,
+                                color,
+                                themeId,
+                                page,
+                                size
+                        );
+                returnJson.put(RETURN_RESULT,result);
             }
         }
         //业务异常

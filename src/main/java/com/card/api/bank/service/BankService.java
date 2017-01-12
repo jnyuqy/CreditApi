@@ -53,10 +53,14 @@ public class BankService extends BaseService<BankBean>{
 		//银行查询实体构建
 		QBankBean _bank = QBankBean.bankBean;
 		//查询条件接口
-		BooleanExpression expression = _bank.hot.eq(bank.getHot());
+		BooleanExpression expression = null;
+		if(!ValidatorUtils.isEmpty(bank.getHot()))
+		{
+			expression = _bank.hot.eq(bank.getHot());
+		}
 		//如果银行名称不为空，根据名称查询
 		if(!ValidatorUtils.isEmpty(bank.getName())) {
-			expression = expression.and(_bank.name.eq(bank.getName()));
+			expression = expression == null ? _bank.name.eq(bank.getName()) : expression.and(_bank.name.eq(bank.getName()));
 		}
 		//返回分页数据
 		return bankDAO.findAll(expression,new PageRequest(bank.getPage() - 1, bank.getSize())).getContent();

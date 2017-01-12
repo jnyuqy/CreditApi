@@ -114,7 +114,7 @@ public class SecurityUtils {
 	public static synchronized boolean validate(HashMap<String, Object> params) throws LogicException{
 		//参数赋值
 		SecurityUtils.params = params;
-		System.out.print(JSONUtils.toJSONString(params));
+		System.out.println("请求参数列表：" + JSONUtils.toJSONString(params));
 		//ip地址验证不通过
 		if(!validateIp())
 		{
@@ -223,11 +223,11 @@ public class SecurityUtils {
 		for (String key : _temp_param_keys) {
 			url.append(key + "=" + params.get(key) + "&");
 		}
-		System.out.println("请求路径：" + url);
+		System.out.println("未加密字符串：" + url);
 		//生成sign
 		String sign = Base64.encode((SIGN_XX + MD5.MD5(url.toString())).getBytes());
-		System.out.println("sign : " + sign);
-		System.out.println("client_sign : " + client_sign);
+		System.out.println("服务器签名 : " + sign);
+		System.out.println("客户端签名 : " + client_sign);
 		//返回sign比对
 		return client_sign.trim().equals(sign);
 		
