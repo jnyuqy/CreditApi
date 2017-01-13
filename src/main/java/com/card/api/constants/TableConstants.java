@@ -120,4 +120,7 @@ public interface TableConstants {
 
 	/** 信用卡等级信息表 */
 	public static final String SYSTEM_CREDIT_LEVEL_INFO = "c_credit_level_info";
+
+	/** 信用卡特权类型信息表 */
+	public static final String COMMON_PRIVILEGE_TYPE_INFO = "c_common_privilege_type";
 }

@@ -93,11 +93,11 @@ public class CreditService
             //每一行数据
             HashMap<String,Object> map = new HashMap<String,Object>();
             Object[] cell = (Object[]) row;
-            map.put("id",cell[0]);
-            map.put("applyCount",cell[1]);
-            map.put("name",cell[2]);
-            map.put("img",cell[3]);
-            map.put("title",cell[4]);
+            map.put("id",ValidatorUtils.isEmpty(cell[0]) ? "" : cell[0]);
+            map.put("applyCount",ValidatorUtils.isEmpty(cell[1]) ? "" : cell[1]);
+            map.put("name",ValidatorUtils.isEmpty(cell[2]) ? "" : cell[2]);
+            map.put("img",ValidatorUtils.isEmpty(cell[3]) ? "" : cell[3]);
+            map.put("title",ValidatorUtils.isEmpty(cell[4]) ? "" : cell[4]);
             result.add(map);
         }
         return result;
