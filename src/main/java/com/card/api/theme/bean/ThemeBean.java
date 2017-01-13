@@ -1,4 +1,4 @@
-package com.card.api.credit.bean;
+package com.card.api.theme.bean;
 
 import com.card.api.constants.TableConstants;
 import com.card.core.annotation.Comment;
