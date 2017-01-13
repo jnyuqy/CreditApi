@@ -44,6 +44,9 @@ public class StrategyBean extends BaseBean {
 	@Column(name = "ccsi_title")
 	private String title;
 
+	//描述
+	@Column(name = "ccsi_desc")
+	private String desc;
 	// 内容
 	@Column(name = "ccsi_content")
 	private String content;
@@ -121,4 +124,11 @@ public class StrategyBean extends BaseBean {
 		this.hot = hot;
 	}
 
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
 }

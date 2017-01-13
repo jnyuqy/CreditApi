@@ -3,12 +3,13 @@ package com.card.api.credit.service;
 import com.card.api.credit.bean.CreditBean;
 import com.card.api.credit.dao.CreditDAO;
 import com.card.core.service.BaseService;
-import com.card.core.utils.JSONUtils;
 import com.card.core.utils.ParseUtils;
 import com.card.core.utils.ValidatorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -68,8 +69,40 @@ public class CreditService
         int page = ParseUtils.toInteger(params[9]);
         //每页条目数
         int size = ParseUtils.toInteger(params[10]);
+
+        //执行本地查询调用存储过程
+        Query query = entityManager.createNativeQuery("CALL proc_query_credit_list(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11)");
+        //设置参数列表
+        query.setParameter(1,bankId);
+        query.setParameter(2,useId);
+        query.setParameter(3,levelId);
+        query.setParameter(4,yearMoney);
+        query.setParameter(5,moneyType);
+        query.setParameter(6,organId);
+        query.setParameter(7,privilegeId);
+        query.setParameter(8,color);
+        query.setParameter(9,themeId);
+        query.setParameter(10,page);
+        query.setParameter(11,size);
+        //执行查询并且返回列表
+        List rows = query.getResultList();
+        //最终返回列表
+        List<HashMap<String,Object>> result = new ArrayList<HashMap<String, Object>>();
+        //遍历设置key,value对应
+        for (Object row : rows) {
+            //每一行数据
+            HashMap<String,Object> map = new HashMap<String,Object>();
+            Object[] cell = (Object[]) row;
+            map.put("id",cell[0]);
+            map.put("applyCount",cell[1]);
+            map.put("name",cell[2]);
+            map.put("img",cell[3]);
+            map.put("title",cell[4]);
+            result.add(map);
+        }
+        return result;
         //执行查询存储过程返回信用卡列表
-        return creditDAO.list(bankId,useId,levelId,yearMoney,moneyType,organId,privilegeId,color,themeId,page,size);
+        //return creditDAO.list(bankId,useId,levelId,yearMoney,moneyType,organId,privilegeId,color,themeId,page,size);
     }
 
     @Override

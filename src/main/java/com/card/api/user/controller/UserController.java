@@ -73,7 +73,7 @@ public class UserController extends BaseController{
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String",required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String",required = true)
 	})
-	@RequestMapping(value = "/login/{time}/{api_key}/{sign}", method = RequestMethod.GET)
+	@RequestMapping(value = "/login/{name}/{pwd}/{time}/{api_key}/{sign}", method = RequestMethod.GET)
 	public JSONObject login
 		(
 				@PathVariable String name,

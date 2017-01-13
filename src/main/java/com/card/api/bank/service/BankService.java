@@ -49,7 +49,6 @@ public class BankService extends BaseService<BankBean>{
 	 */
 	public List<BankBean> list(BankBean bank)
 	{
-		System.out.println(JSONUtils.toJSONString(bank));
 		//银行查询实体构建
 		QBankBean _bank = QBankBean.bankBean;
 		//查询条件接口

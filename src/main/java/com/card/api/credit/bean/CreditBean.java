@@ -1,6 +1,8 @@
 package com.card.api.credit.bean;
 
 import com.card.api.constants.TableConstants;
+import com.card.api.level.bean.LevelBean;
+import com.card.api.organ.bean.OrganBean;
 import com.card.core.annotation.Comment;
 import com.card.core.bean.BaseBean;
 

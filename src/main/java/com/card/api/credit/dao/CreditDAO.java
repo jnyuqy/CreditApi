@@ -21,11 +21,11 @@ public interface CreditDAO extends BaseDAO<CreditBean>
 {
 
     //查询信用卡列表，调用存储过程
-    @Query(
+   /* @Query(
             value = "CALL proc_query_credit_list(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11)",
             nativeQuery = true
-    )
-    public List<HashMap<String,Object>> list
+    )*/
+    /*public List<HashMap<String,Object>> list
     (
             Long bankId,//银行编号
             Long useId,//用途
@@ -38,5 +38,5 @@ public interface CreditDAO extends BaseDAO<CreditBean>
             Long themeId,//主题
             int page,//当前页码
             int size//每页条数
-    );
+    );*/
 }

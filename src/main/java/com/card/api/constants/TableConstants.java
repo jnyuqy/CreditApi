@@ -114,4 +114,10 @@ public interface TableConstants {
 
 	/** 信用卡特权管理基本信息表 */
 	public static final String SYSTEM_PRIVILEGE_INFO = "c_credit_privilege_info";
+
+	/** 信用卡用途信息表 */
+	public static final String SYSTEM_CREDIT_USE_INFO = "c_credit_use_info";
+
+	/** 信用卡等级信息表 */
+	public static final String SYSTEM_CREDIT_LEVEL_INFO = "c_credit_level_info";
 }
