@@ -1,9 +1,9 @@
-package com.card.api.privilege.controller;
+package com.card.api.theme.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.card.api.organ.bean.OrganBean;
-import com.card.api.privilege.bean.PrivilegeTypeBean;
-import com.card.api.privilege.service.PrivilegeTypeService;
+import com.card.api.theme.bean.ThemeBean;
+import com.card.api.theme.service.ThemeService;
 import com.card.api.utils.SecurityUtils;
 import com.card.core.constants.SysMsgConstants;
 import com.card.core.controller.BaseController;
@@ -21,31 +21,31 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ *
  * 项目名称：credirCardApi
  * 项目版本：V1.0
- * 包名称：com.card.api.privilege.controller
+ * 包名称：com.card.api.theme.controller
  * 创建人：yuqy
- * 创建时间：2017/1/13 16:23
+ * 创建时间：2017/1/13 16:48
  * 修改人：yuqy
- * 修改时间：2017/1/13 16:23
+ * 修改时间：2017/1/13 16:48
  * 修改备注：
  */
 @RestController
-@RequestMapping(value = "/privilege")
-public class PrivilegeTypeController extends BaseController
+@RequestMapping(value = "/theme")
+public class ThemeController extends BaseController
 {
-
     @Autowired
-    private PrivilegeTypeService privilegeTypeService;
+    private ThemeService themeService;
 
     /**
-     * 查询信用卡特权类型列表
+     * 查询信用卡主题列表
      * @param time 时间戳
      * @param api_key apikey
      * @param sign 签名
      * @return
      */
-    @ApiOperation(value = "信用卡特权类型列表", notes = "查询出信用卡特权类型列表")
+    @ApiOperation(value = "信用卡主题列表", notes = "查询出信用卡主题列表")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String",required = true),
             @ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String",required = true),
@@ -79,9 +79,9 @@ public class PrivilegeTypeController extends BaseController
             }))
             {
                 //查询列表
-                List<PrivilegeTypeBean> privilegeTypes = privilegeTypeService.list();
+                List<ThemeBean> themes = themeService.list();
                 //返回列表
-                returnJson.put(RETURN_RESULT,privilegeTypes);
+                returnJson.put(RETURN_RESULT,themes);
             }
         }
         //业务异常

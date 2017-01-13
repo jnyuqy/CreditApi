@@ -6,6 +6,7 @@ import com.card.core.service.BaseService;
 import com.card.core.utils.ParseUtils;
 import com.card.core.utils.ValidatorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Query;
@@ -105,6 +106,7 @@ public class CreditService
         //return creditDAO.list(bankId,useId,levelId,yearMoney,moneyType,organId,privilegeId,color,themeId,page,size);
     }
 
+    @Cacheable(value = "demo",key = "#p0")
     @Override
     public CreditBean findById(Long pk) {
         return creditDAO.findOne(pk);

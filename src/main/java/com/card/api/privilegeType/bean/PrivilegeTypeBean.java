@@ -1,4 +1,4 @@
-package com.card.api.privilege.bean;
+package com.card.api.privilegeType.bean;
 
 import com.card.api.constants.TableConstants;
 import com.card.core.bean.BaseBean;
@@ -8,7 +8,7 @@ import javax.persistence.*;
 /**
  * 项目名称：credirCardApi
  * 项目版本：V1.0
- * 包名称：com.card.api.privilege.bean
+ * 包名称：com.card.api.privilegeType.bean
  * 创建人：yuqy
  * 创建时间：2017/1/13 16:22
  * 修改人：yuqy

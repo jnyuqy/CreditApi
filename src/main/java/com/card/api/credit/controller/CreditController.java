@@ -137,9 +137,69 @@ public class CreditController extends BaseController
         return returnJson;
     }
 
-
-    public JSONObject detail()
+    /**
+     * 查询信用卡详情
+     * @param time 时间戳
+     * @param api_key 授权码
+     * @param sign 签名
+     * @param creditId 信用卡编号
+     * @return
+     */
+    @ApiOperation(value = "查询信用卡详情", notes = "查询信用卡详情")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "creditId", value = "信用卡编号", dataType = "Long",required = true),
+            @ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String", required = true),
+            @ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
+            @ApiImplicitParam(name = "sign", value = "签名,(参数列表+time+api_key)生成url串首字母排序正序=sign", dataType = "String", required = true) })
+    @RequestMapping(value = "/{creditId}/{time}/{api_key}/{sign}", method = RequestMethod.GET)
+    public JSONObject detail
+            (
+                    @PathVariable Long creditId,
+                    @PathVariable String time,
+                    @PathVariable String api_key,
+                    @PathVariable String sign
+            )
     {
+        //标识，默认为true
+        boolean flag = true;
+        //清空集合
+        returnJson.clear();
+        try {
+            //验证接口是否有权访问
+            if (SecurityUtils.validate(new HashMap<String, Object>() {
+                /**
+                 * 序列号
+                 */
+                private static final long serialVersionUID = 2138548644834576384L;
+                {
+                    put("creditId", creditId);
+                    put(SecurityUtils._TIME, time);
+                    put(SecurityUtils._API_KEY, api_key);
+                    put(SecurityUtils._CLIENT_IP, SecurityUtils.getCliectIp(request));
+                    put(SecurityUtils._SIGN, sign);
+                }
+            }))
+            {
+                //返回信用卡详情
+                CreditBean credit = creditService.findById(creditId);
+                returnJson.put(RETURN_RESULT,credit);
+            }
+        }
+        //业务异常
+        catch (LogicException e) {
+            e.printStackTrace();
+            flag = false;
+            //设置返回错误消息
+            returnJson.put(RETURN_MSG, msgUtils.getValue(e.getMsgId(), e.getParams()));
+        }
+        //系统异常
+        catch (Exception e) {
+            e.printStackTrace();
+            flag = false;
+            returnJson.put(RETURN_MSG, msgUtils.getValue(SysMsgConstants.SYSTEM_ERROR));
+        }
+        //返回执行标识
+        returnJson.put(RETURN_FLAG, flag);
         return returnJson;
     }
 }

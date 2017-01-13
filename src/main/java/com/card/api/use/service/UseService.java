@@ -4,6 +4,7 @@ import com.card.api.use.bean.UseBean;
 import com.card.api.use.dao.UseDAO;
 import com.card.core.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class UseService extends BaseService<UseBean>
      * 查询用途列表
      * @return
      */
+    @Cacheable(value = "demo")
     public List<UseBean> list()
     {
         return useDAO.findAll();

@@ -1,10 +1,10 @@
-package com.card.api.privilege.service;
+package com.card.api.privilegeType.service;
 
-import com.card.api.credit.bean.PrivilegeBean;
-import com.card.api.privilege.bean.PrivilegeTypeBean;
-import com.card.api.privilege.dao.PrivilegeTypeDAO;
+import com.card.api.privilegeType.bean.PrivilegeTypeBean;
+import com.card.api.privilegeType.dao.PrivilegeTypeDAO;
 import com.card.core.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 项目名称：credirCardApi
  * 项目版本：V1.0
- * 包名称：com.card.api.privilege.service
+ * 包名称：com.card.api.privilegeType.service
  * 创建人：yuqy
  * 创建时间：2017/1/13 16:24
  * 修改人：yuqy
@@ -29,6 +29,7 @@ public class PrivilegeTypeService extends BaseService<PrivilegeTypeBean>
      * 查询特权类型列表
      * @return
      */
+    @Cacheable(value = "demo")
     public List<PrivilegeTypeBean> list(){
         return privilegeTypeDAO.findAll();
     }

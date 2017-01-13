@@ -34,6 +34,7 @@ public class SeriesBean extends BaseBean {
 	@Comment("信用卡系列编号")
 	@GeneratedValue
 	private Long id;
+
 	// 信用卡所属银行id
 	@OneToOne(cascade = CascadeType.ALL)
 	// 外键字段
@@ -41,59 +42,54 @@ public class SeriesBean extends BaseBean {
 	@Comment("所属银行外键")
 	@NotNull
 	private BankBean bank;
+
 	// 信用卡系列名称
 	@Column(name = "ccs_name")
 	@Comment("信用卡系列名称")
 	@NotNull
 	private String name;
-	// 信用卡系列包含的等级，多个采用“,”隔开
-	@Column(name = "ccs_levels")
-	@Comment("信用卡系列所包含的等级")
-	@NotNull
-	private String levels;
-	// 系列币种，1：人民币，2：多币卡
-	@Column(name = "ccs_money_type")
-	@Comment("系列币种，1：人民币，2：多币卡")
-	@NotNull
-	private String moneyType;
-	// 年费政策
-	@Column(name = "ccs_year_money")
-	@Comment("年费政策")
-	@NotNull
-	private String yearMoney;
+
 	// 备注
 	@Column(name = "css_mark")
 	@Comment("备注")
 	private String mark;
+
 	// 积分规则
 	@Column(name = "css_score")
 	@Comment("积分规则")
 	private String score;
+
 	// 积分有效期
 	@Column(name = "css_score_effective")
 	@Comment("积分有效期")
 	private String scoreEffective;
+
 	// 最低取现费用
 	@Column(name = "ccs_cash_min")
 	@Comment("最低取现费用")
 	@NotNull
 	private Integer cashMin;
+
 	// 可取现百分比
 	@Column(name = "css_cash_percent")
 	@Comment("可取现百分比")
 	private Integer cashPercent;
+
 	// 取现手续费为取现金额的百分比
 	@Column(name = "css_cash_poundage")
 	@Comment("取现手续费为取现金额的百分比")
 	private Integer cashPoundage;
+
 	// 最短免息天
 	@Column(name = "css_free_interest_min")
 	@Comment("最短免息天")
 	private Integer freeInterestMin;
+
 	// 最长免息天
 	@Column(name = "css_free_interest_max")
 	@Comment("最长免息天")
 	private Integer freeInterestMax;
+
 	// 短信通知
 	@Column(name = "css_phone_message")
 	@Comment("短信通知")
@@ -146,23 +142,13 @@ public class SeriesBean extends BaseBean {
 	@Column(name = "css_supple_money")
 	@Comment("补卡费")
 	private Integer suppleMoney;
-	// 该系列办卡数量
-	@Column(name = "css_handle_count")
-	@Comment("该系列办卡数量")
-	private Integer handleCount;
 
 	//信用卡系列分期列表
 	@OneToMany(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="ccsi_series_id",insertable = false,updatable = false)
 	private List<SplitBean> splits;
 
-	//关联信用卡系列特权列表
-	@OneToMany
-	@JoinTable(
-			name = "c_credit_series_privilege_uni",
-			joinColumns = {@JoinColumn(name = "ccspu_series_id")},
-			inverseJoinColumns = {@JoinColumn(name = "ccspu_privilege_id")})
-	private List<PrivilegeBean> privileges;
+
 
 	public Long getId() {
 		return id;
@@ -188,29 +174,6 @@ public class SeriesBean extends BaseBean {
 		this.name = name;
 	}
 
-	public String getLevels() {
-		return levels;
-	}
-
-	public void setLevels(String levels) {
-		this.levels = levels;
-	}
-
-	public String getMoneyType() {
-		return moneyType;
-	}
-
-	public void setMoneyType(String moneyType) {
-		this.moneyType = moneyType;
-	}
-
-	public String getYearMoney() {
-		return yearMoney;
-	}
-
-	public void setYearMoney(String yearMoney) {
-		this.yearMoney = yearMoney;
-	}
 
 	public String getMark() {
 		return mark;
@@ -380,14 +343,6 @@ public class SeriesBean extends BaseBean {
 		this.suppleMoney = suppleMoney;
 	}
 
-	public Integer getHandleCount() {
-		return handleCount;
-	}
-
-	public void setHandleCount(Integer handleCount) {
-		this.handleCount = handleCount;
-	}
-
 	public List<SplitBean> getSplits() {
 		return splits;
 	}
@@ -396,11 +351,4 @@ public class SeriesBean extends BaseBean {
 		this.splits = splits;
 	}
 
-	public List<PrivilegeBean> getPrivileges() {
-		return privileges;
-	}
-
-	public void setPrivileges(List<PrivilegeBean> privileges) {
-		this.privileges = privileges;
-	}
 }

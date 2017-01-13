@@ -4,6 +4,7 @@ import com.card.api.organ.bean.OrganBean;
 import com.card.api.organ.dao.OrganDAO;
 import com.card.core.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class OrganService extends BaseService<OrganBean>
      * 查询信用卡组织列表
      * @return
      */
+    @Cacheable(value = "demo")
     public List<OrganBean> list()
     {
         return organDAO.findAll();
