@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.spring.web.json.Json;
 
 import java.util.HashMap;
 import java.util.List;
@@ -132,6 +133,12 @@ public class CreditController extends BaseController
         }
         //返回执行标识
         returnJson.put(RETURN_FLAG, flag);
+        return returnJson;
+    }
+
+
+    public JSONObject detail()
+    {
         return returnJson;
     }
 }
