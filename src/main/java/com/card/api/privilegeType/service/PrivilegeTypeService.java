@@ -4,6 +4,7 @@ import com.card.api.privilegeType.bean.PrivilegeTypeBean;
 import com.card.api.privilegeType.dao.PrivilegeTypeDAO;
 import com.card.core.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
  * 修改时间：2017/1/13 16:24
  * 修改备注：
  */
+@CacheConfig(cacheNames = "privilegeType")
 @Service
 public class PrivilegeTypeService extends BaseService<PrivilegeTypeBean>
 {

@@ -1,5 +1,6 @@
 package com.card.api.user.dao;
 
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,6 +19,7 @@ import com.card.core.dao.BaseDAO;
  * 修改时间：2017年1月3日 上午11:27:12<br>
  * 修改备注：<br>
  */
+@CacheConfig(cacheNames = "user")
 public interface UserDAO extends BaseDAO<UserBean> {
 
 	//根据用户名查询用户详情

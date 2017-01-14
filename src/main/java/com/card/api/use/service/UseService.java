@@ -4,6 +4,7 @@ import com.card.api.use.bean.UseBean;
 import com.card.api.use.dao.UseDAO;
 import com.card.core.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.List;
  * 修改备注：
  */
 @Service
+@CacheConfig(cacheNames = "use")
 public class UseService extends BaseService<UseBean>
 {
 

@@ -4,6 +4,7 @@ import com.card.api.theme.bean.ThemeBean;
 import com.card.api.theme.dao.ThemeDAO;
 import com.card.core.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
  * 修改时间：2017/1/13 16:45
  * 修改备注：
  */
+@CacheConfig(cacheNames = "theme")
 @Service
 public class ThemeService extends BaseService<ThemeBean>
 {

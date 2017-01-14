@@ -6,6 +6,7 @@ import com.card.core.service.BaseService;
 import com.card.core.utils.ParseUtils;
 import com.card.core.utils.ValidatorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ import java.util.List;
  * 修改时间：2017/1/11 20:08
  * 修改备注：
  */
+@CacheConfig(cacheNames = "credit")
 @Service
 public class CreditService
         extends BaseService<CreditBean>

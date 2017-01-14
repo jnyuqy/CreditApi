@@ -4,6 +4,7 @@ import com.card.api.organ.bean.OrganBean;
 import com.card.api.organ.dao.OrganDAO;
 import com.card.core.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
  * 修改时间：2017/1/13 15:08
  * 修改备注：
  */
+@CacheConfig(cacheNames = "organ")
 @Service
 public class OrganService extends BaseService<OrganBean>
 {

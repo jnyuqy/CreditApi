@@ -4,6 +4,7 @@ import com.card.api.resource.bean.BannerBean;
 import com.card.api.resource.dao.BannerDAO;
 import com.card.core.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.List;
  * 修改时间：2017/1/9 20:31
  * 修改备注：
  */
+@CacheConfig(cacheNames = "banner")
 @Service
 public class BannerService extends BaseService<BannerBean>
 {

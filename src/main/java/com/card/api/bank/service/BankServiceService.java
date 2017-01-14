@@ -3,6 +3,7 @@ package com.card.api.bank.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ import com.card.core.utils.ValidatorUtils;
  * 修改时间：2017年1月6日 下午3:50:51<br>
  * 修改备注：
  */
+@CacheConfig(cacheNames = "bankService")
 @Service
 public class BankServiceService extends BaseService<BankServiceBean> {
 

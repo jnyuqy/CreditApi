@@ -4,6 +4,7 @@ import com.card.api.level.bean.LevelBean;
 import com.card.api.level.dao.LevelDAO;
 import com.card.core.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
  * 修改时间：2017/1/13 14:53
  * 修改备注：
  */
+@CacheConfig(cacheNames = "level")
 @Service
 public class LevelService extends BaseService<LevelBean>
 {

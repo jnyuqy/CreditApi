@@ -22,14 +22,14 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableAutoConfiguration
 @ComponentScan
 @SpringBootApplication
-public class CreditCardApiApplication extends SpringBootServletInitializer
+public class CreditCardApiApplication// extends SpringBootServletInitializer
 {
 
-	@Override
+	/*@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		application.sources(CreditCardApiApplication.class);
 		return super.configure(application);
-	}
+	}*/
 	
 	//springboot程序入口
 	public static void main(String[] args) {
