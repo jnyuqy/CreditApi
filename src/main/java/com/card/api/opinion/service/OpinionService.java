@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
+ * 意见反馈业务逻辑
  * 项目名称：CreditCardApi
  * 项目版本：V1.0
  * 包名称：com.card.api.opinion.service

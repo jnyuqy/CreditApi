@@ -4,6 +4,7 @@ import com.card.api.resource.bean.BannerBean;
 import com.card.api.resource.dao.BannerDAO;
 import com.card.core.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.List;
 @Service
 public class BannerService extends BaseService<BannerBean>
 {
+    public static final String PREFFIX = "http://192.168.1.116:8080/api";
     //数据接口
     @Autowired
     private BannerDAO bannerDAO;
@@ -30,6 +32,7 @@ public class BannerService extends BaseService<BannerBean>
      * 查询全部banner图片信息
      * @return
      */
+    @Cacheable(value = "demo")
     public List<BannerBean> list()
     {
         //查询全部banner
@@ -37,7 +40,7 @@ public class BannerService extends BaseService<BannerBean>
         //遍历banner设置全路径
         for (BannerBean banner:
              banners) {
-            banner.setPath("http://192.168.1.116:8080/api"+banner.getPath());
+            banner.setPath(PREFFIX + banner.getPath());
         }
         return banners;
     }

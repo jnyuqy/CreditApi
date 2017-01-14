@@ -1,7 +1,7 @@
 spring:
   datasource:
     name: test
-    url: jdbc:mysql://192.168.1.116:3306/credit
+    url: jdbc:mysql://192.168.1.116:3306/credit?characterEncoding=utf8
     username: xunmei
     password: xunmei@code..
     type: com.alibaba.druid.pool.DruidDataSource

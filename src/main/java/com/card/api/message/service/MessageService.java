@@ -53,7 +53,6 @@ public class MessageService implements Serializable{
 	 * 
 	 * @param phone 接受者手机号码<br>
 	 * @return<br>
-	 * @throws LogicException<br>
 	 * @return String
 	 */
 	public String sendMessage(String phone) throws LogicException
@@ -162,5 +161,35 @@ public class MessageService implements Serializable{
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 验证验证码是否存在服务器内
+	 * 是否已经超时
+	 * @param code
+	 * @return
+	 */
+	public boolean validateCode(String phone,String code)
+	{
+		boolean flag = false;
+		String[] infos = CODES.get(phone);
+		//如果内存中存在该手机号码的验证码
+		if(!ValidatorUtils.isEmpty(infos)){
+			//验证验证码时间是否超时
+			//生成验证码时的时间
+			Long create_time = Long.valueOf(infos[2]);
+			//当前时间
+			Long local_time = System.nanoTime();
+			//时间戳秒数
+			long second = TimeUnit.NANOSECONDS.toSeconds(local_time - create_time);
+			//如果时间戳小于等于30分钟返回内存中的验证码
+			if(second <= (60 * 60 * 30))
+			{
+				flag = infos[1].equals(code);
+			}
+		}
+		//删除存放的验证码
+		if (flag) CODES.remove(phone);
+		return flag;
 	}
 }

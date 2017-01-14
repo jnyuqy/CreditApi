@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.transaction.Transactional;
 
+import com.card.core.utils.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -86,7 +87,6 @@ public class UserService extends BaseService<UserBean>{
 	 * 
 	 * @param user<br>
 	 * @return<br>
-	 * @throws Exception<br>
 	 * @return UserBean
 	 */
 	public UserBean register(UserBean user) throws Exception {
@@ -117,7 +117,6 @@ public class UserService extends BaseService<UserBean>{
 	 * 
 	 * @param user<br>
 	 * @return<br>
-	 * @throws Exception<br>
 	 * @return UserBean
 	 */
 	public void modifyPwd(UserBean user) throws Exception {
@@ -157,7 +156,6 @@ public class UserService extends BaseService<UserBean>{
 	 * modifyNickName<br>
 	 * 
 	 * @param user<br>
-	 * @throws Exception<br>
 	 * @return void<br>
 	 */
 	public void modifyNickName(UserBean user) throws Exception
@@ -195,7 +193,6 @@ public class UserService extends BaseService<UserBean>{
 	 * modifyMail<br>
 	 * 
 	 * @param user<br>
-	 * @throws Exception<br>
 	 * @return void
 	 */
 	public void modifyMail(UserBean user) throws Exception

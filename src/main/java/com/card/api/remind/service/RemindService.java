@@ -81,8 +81,7 @@ public class RemindService extends BaseService<RemindBean>{
 	 * 还款提醒列表<br>
 	 * 2017年1月6日 下午6:26:38<br>
 	 * list<br>
-	 * 
-	 * @param remind
+	 *
 	 *            还款提醒实体<br>
 	 * @return
 	 * @return List<RemindBean>

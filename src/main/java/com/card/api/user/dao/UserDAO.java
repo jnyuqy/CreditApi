@@ -21,6 +21,7 @@ import com.card.core.dao.BaseDAO;
 public interface UserDAO extends BaseDAO<UserBean> {
 
 	//根据用户名查询用户详情
+	@Cacheable(value = "demo", key = "#p0")
 	@Query(value = "select * from " + TableConstants.SYSTEM_USERS_INFO + " where cui_name = ?1", nativeQuery = true)
 	public UserBean findOne(String userName);
 	

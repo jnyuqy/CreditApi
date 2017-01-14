@@ -2,6 +2,7 @@ package com.card.api.user.controller;
 
 import java.util.HashMap;
 
+import com.card.api.message.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,9 @@ public class UserController extends BaseController{
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private MessageService messageService;
 	/**  
 	* 序列号
 	* {@value}
@@ -153,6 +157,7 @@ public class UserController extends BaseController{
 	@ApiOperation(value = "用户注册", notes = "根据手机号码注册用户")
 	@ApiImplicitParams(value = {
 			@ApiImplicitParam(name = "phone", value = "手机号码", dataType = "String", required = true),
+			@ApiImplicitParam(name = "code", value = "验证码", dataType = "String", required = true),
 			@ApiImplicitParam(name = "time", value = "时间戳,如：1484025494802(毫秒)", dataType = "String", required = true),
 			@ApiImplicitParam(name = "api_key", value = "客户端授权码", dataType = "String", required = true),
 			@ApiImplicitParam(name = "sign", value = "签名,参数列表首字母排序正序+time+api_key=sign", dataType = "String", required = true) })
@@ -162,7 +167,8 @@ public class UserController extends BaseController{
 				@PathVariable String phone,
 				@PathVariable String time,
 				@PathVariable String api_key,
-			    @PathVariable String sign
+			    @PathVariable String sign,
+				@RequestParam(value = "code",required = true)String code
 		)
 	{
 		//登录对象
@@ -180,6 +186,7 @@ public class UserController extends BaseController{
 				private static final long serialVersionUID = 2138548644834576384L;
 				{
 					put("phone", phone);
+					put("code", code);
 					put(SecurityUtils._TIME, time);
 					put(SecurityUtils._API_KEY, api_key);
 					put(SecurityUtils._CLIENT_IP, SecurityUtils.getCliectIp(request));
@@ -187,6 +194,12 @@ public class UserController extends BaseController{
 				}
 			})) 
 			{
+				//验证验证码是否有效
+				boolean f_ = messageService.validateCode(phone,code);
+				if(!f_)
+				{
+					throw new LogicException(SysMsgConstants.XX_ERROR,"验证码填写错误","注册失败");
+				}
 				// 收集参数
 				user.setPhone(phone);
 				// 执行注册业务
